@@ -1,1 +1,10 @@
-<div data-controller="chart" style="width: 800px;"><canvas id="bubbleChart"></canvas></div>
+<div data-controller="chart">
+  <canvas id="bubbleChart" width="600" height="400"></canvas>
+
+  <button
+    data-action="click->chart#sendRequest"
+    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+  >
+    Send Request
+  </button>
+</div>

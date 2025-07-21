@@ -1,60 +1,75 @@
 import { Controller } from "@hotwired/stimulus"
-import Chart from 'chart.js/auto'
+import Chart from "chart.js/auto"
 
 // Connects to data-controller="chart"
 export default class extends Controller {
   connect() {
-    (async function() {
-      const data = {
-        datasets: [{
-          label: 'Instance 1',
-          data: [{
-            x: 5,
-            y: 200,
-            r: 5
-          },
-        {
-            x: 8,
-            y: 200,
-            r: 5
-          },
-        {
-            x: 16,
-            y: 429,
-            r: 5
-          }],
-          backgroundColor: 'rgba(99, 109, 255, 1)'
-        },
-        {
-          label: 'Instance 2',
-          data: [{
-            x: 5,
-            y: 200,
-            r: 5
+    const ctx = document.getElementById("bubbleChart").getContext("2d")
+
+    this.chart = new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          {
+            label: '200 OK',
+            data: [],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)' // teal
           },
           {
-            x: 9,
-            y: 429,
-            r: 5
+            label: '429 Too Many',
+            data: [],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)' // red
+          }
+        ]
+      },
+      options: {
+        parsing: false,
+        scales: {
+          x: {
+            type: 'linear', // numeric axis
+            title: { display: true, text: 'Time' },
+            ticks: {
+              display: false
+            }
           },
-        {
-            x: 20,
-            y: 429,
-            r: 5
-          }],
-          backgroundColor: 'rgba(99, 255, 177, 1)',
+          y: {
+            type: 'linear',
+            min: 0.5,
+            max: 2.5,
+            title: { display: true, text: 'Status Code' },
+            ticks: {
+              callback: function (value) {
+                if (value === 1) return '200 OK'
+                if (value === 2) return '429 Too Many'
+                return ''
+              },
+              stepSize: 1,
+            }
+          }
         }
-      ]
-      };
+      }
+    })
+  }
 
-      new Chart(
-        document.getElementById('bubbleChart'),
-        {
-            type: 'bubble',
-            data: data,
-            options: {}
+  sendRequest() {
+    fetch('/trigger')
+      .then(res => res.json())
+      .then(data => {
+        const bubble = {
+          x: data.time,
+          y: data.status_code === 200 ? 1 : 2,
+          r: 8
         }
-      );
-    })();
+
+        if (data.status_code === 200) {
+          this.chart.data.datasets[0].data.push(bubble)
+        } else if (data.status_code === 429) {
+          this.chart.data.datasets[1].data.push(bubble)
+        } else {
+          console.warn("Unexpected status code:", data.status_code)
+        }
+
+        this.chart.update()
+      })
   }
 }
