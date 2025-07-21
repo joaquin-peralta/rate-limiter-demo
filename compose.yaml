@@ -87,6 +87,7 @@ services:
     ports:
       - "${DOCKER_WEB_PORT_FORWARD:-127.0.0.1:8000}:${PORT:-8000}"
     profiles: ["web"]
+    # stdin_open: true // uncomment to debug
 
   worker:
     <<: *default-app
