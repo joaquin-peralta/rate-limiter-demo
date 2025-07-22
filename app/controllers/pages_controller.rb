@@ -16,6 +16,9 @@ class PagesController < ApplicationController
 
     value = @redis.get(key).to_i
 
+    puts "VALUE"
+    puts value
+
     status_code = 200
     time = Time.current.to_f
 
@@ -25,5 +28,21 @@ class PagesController < ApplicationController
       status_code: status_code,
       time: time
     }
+  end
+
+  def options
+    if params[:max_per_window].present? && params[:window_size].present?
+      ENV["MAX_PER_WINDOW"] = params[:max_per_window]
+      ENV["WINDOW_SIZE"] = params[:window_size]
+
+      flash.now[:notice] = "✅ Settings updated successfully."
+    else
+      flash.now[:alert] = "⚠️ Both values are required."
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to root_path, notice: flash.now[:notice] || flash.now[:alert] }
+    end
   end
 end

@@ -13,12 +13,12 @@ export default class extends Controller {
           {
             label: '200 OK',
             data: [],
-            backgroundColor: 'rgba(75, 192, 192, 0.6)' // teal
+            backgroundColor: 'rgba(75, 192, 192, 0.6)'
           },
           {
             label: '429 Too Many',
             data: [],
-            backgroundColor: 'rgba(255, 99, 132, 0.6)' // red
+            backgroundColor: 'rgba(255, 99, 132, 0.6)'
           }
         ]
       },
@@ -26,7 +26,7 @@ export default class extends Controller {
         parsing: false,
         scales: {
           x: {
-            type: 'linear', // numeric axis
+            type: 'linear',
             title: { display: true, text: 'Time' },
             ticks: {
               display: false

@@ -1,3 +1,22 @@
+<%= turbo_frame_tag "flash" do %>
+  <!-- flash will appear here -->
+<% end %>
+
+<%= form_with url: options_path, method: :post, data: { turbo_frame: "flash" } do |form| %>
+  <div class="space-y-2">
+    <div>
+      <%= form.label :max_per_window %>
+      <%= form.number_field :max_per_window, min: 1, value: ENV["MAX_PER_WINDOW"], class: "border rounded px-2 py-1" %>
+    </div>
+    <div>
+      <%= form.label :window_size %>
+      <%= form.number_field :window_size, min: 1, value: ENV["WINDOW_SIZE"], class: "border rounded px-2 py-1" %>
+    </div>
+  </div>
+
+  <%= form.submit "Update Settings", class: "mt-2 px-4 py-1 bg-blue-500 text-white rounded" %>
+<% end %>
+
 <div data-controller="chart">
   <canvas id="bubbleChart" width="600" height="400"></canvas>
 
