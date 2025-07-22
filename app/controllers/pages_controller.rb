@@ -22,7 +22,7 @@ class PagesController < ApplicationController
     status_code = 200
     time = Time.current.to_f
 
-    status_code = 429 if value >= max_per_window.to_i
+    status_code = 429 if value > max_per_window.to_i
 
     render json: {
       status_code: status_code,

@@ -20,7 +20,7 @@ module Middlewares
 
       current = @redis.get(key).to_i
 
-      increment_request_count(key, window_size) if current < max_per_window
+      increment_request_count(key, window_size) if current <= max_per_window
 
       # Here there should be a method to limit the response if the value saved in redis
       # is greater than the max_per_window. Something like this:
