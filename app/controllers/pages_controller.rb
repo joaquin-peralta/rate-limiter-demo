@@ -16,9 +16,6 @@ class PagesController < ApplicationController
 
     value = @redis.get(key).to_i
 
-    puts "VALUE"
-    puts value
-
     status_code = 200
     time = Time.current.to_f
 
