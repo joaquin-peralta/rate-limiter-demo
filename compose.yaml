@@ -21,6 +21,10 @@ x-app: &default-app
   tty: true
   volumes:
     - "${DOCKER_WEB_VOLUME:-./public:/app/public}"
+    # The line below prevents temp files like server.pid from 
+    # being shared across containers or persisting after container rebuilds.
+    # Uncomment if you want to scale the web service.
+    # - /app/tmp
 
 x-assets: &default-assets
   build:
@@ -86,8 +90,11 @@ services:
       retries: 3
     ports:
       - "${DOCKER_WEB_PORT_FORWARD:-127.0.0.1:8000}:${PORT:-8000}"
+      # Switch the line above for the line below to assign ports randomly when scaling this service.
+      # - "127.0.0.1::${PORT:-8000}"
     profiles: ["web"]
-    # stdin_open: true // uncomment to debug
+    # Uncomment the line below to debug.
+    # stdin_open: true
 
   worker:
     <<: *default-app
