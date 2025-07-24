@@ -1,27 +1,48 @@
 <%= turbo_frame_tag "flash" %>
 
-<%= form_with url: options_path, method: :post, data: { turbo_frame: "flash" } do |form| %>
-  <div class="space-y-2">
-    <div>
-      <%= form.label :max_per_window %>
-      <%= form.number_field :max_per_window, min: 1, value: ENV["MAX_PER_WINDOW"], class: "border rounded px-2 py-1" %>
-    </div>
-    <div>
-      <%= form.label :window_size %>
-      <%= form.number_field :window_size, min: 1, value: ENV["WINDOW_SIZE"], class: "border rounded px-2 py-1" %>
-    </div>
+<div class="text-center my-8">
+  <h1 class="text-4xl font-bold text-gray-800">Distributed Rate Limiter</h1>
+  <p class="text-lg text-gray-600 mt-2">A simple Rack-based API rate limiter using Redis, built with Ruby on Rails <%= Rails::VERSION::STRING %></p>
+</div>
+
+
+<%= form_with url: options_path, method: :post, data: { turbo_frame: "flash" }, class: "max-w-md mx-auto bg-white shadow-md rounded px-6 py-4 space-y-4" do |form| %>
+  <div>
+    <%= form.label :max_per_window, "Max Requests per Window", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.number_field :max_per_window,
+        min: 1,
+        value: ENV["MAX_PER_WINDOW"],
+        class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
   </div>
 
-  <%= form.submit "Update Settings", class: "mt-2 px-4 py-1 bg-blue-500 text-white rounded" %>
+  <div>
+    <%= form.label :window_size, "Window Size (seconds)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.number_field :window_size,
+        min: 1,
+        value: ENV["WINDOW_SIZE"],
+        class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+  </div>
+
+  <div class="pt-2">
+    <%= form.submit "Update Settings",
+        class: "w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-150 cursor-pointer" %>
+  </div>
 <% end %>
 
-<div data-controller="chart">
-  <canvas id="bubbleChart" width="600" height="400"></canvas>
+<div data-controller="chart" class="max-w-4xl mx-auto mt-10 space-y-6">
+  <!-- Chart Card -->
+  <div class="bg-white shadow-md rounded-lg p-6 border border-gray-100">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Requests Overview</h2>
+    <canvas id="bubbleChart" width="600" height="400" class="w-full h-auto"></canvas>
+  </div>
 
-  <button
-    data-action="click->chart#sendRequest"
-    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-  >
-    Send Request
-  </button>
+  <!-- Send Request Button -->
+  <div class="text-center">
+    <button
+      data-action="click->chart#sendRequest"
+      class="bg-blue-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-150 shadow cursor-pointer"
+    >
+      🚀 Send Request
+    </button>
+  </div>
 </div>
