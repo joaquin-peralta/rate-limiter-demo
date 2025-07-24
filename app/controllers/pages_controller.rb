@@ -24,7 +24,8 @@ class PagesController < ApplicationController
     render json: {
       status_code: status_code,
       time: time
-    }
+    },
+    status: status_code
   end
 
   def options
