@@ -13,12 +13,12 @@ export default class extends Controller {
           {
             label: '200 OK',
             data: [],
-            backgroundColor: 'rgba(75, 192, 192, 0.6)'
+            backgroundColor: 'rgb(0,128,0)'
           },
           {
             label: '429 Too Many',
             data: [],
-            backgroundColor: 'rgba(255, 99, 132, 0.6)'
+            backgroundColor: 'rgb(220,20,60)'
           }
         ]
       },
@@ -45,6 +45,11 @@ export default class extends Controller {
               },
               stepSize: 1,
             }
+          }
+        },
+        plugins: {
+          tooltip: {
+            enabled: false
           }
         }
       }
